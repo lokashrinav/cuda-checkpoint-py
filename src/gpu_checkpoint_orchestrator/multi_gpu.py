@@ -100,7 +100,11 @@ class MultiGPUCheckpointer:
 
     @staticmethod
     def required_env() -> dict[str, str]:
-        """Environment variables required for multi-GPU checkpoint/restore.
+        """Environment variables required for external multi-GPU checkpoint.
+
+        NCCL_P2P_DISABLE=1 is required here because external orchestration
+        can't tear down NCCL before checkpoint. For in-process checkpoint
+        with hybrid NCCL teardown (no P2P penalty), use InProcessCheckpointer.
 
         These must be set BEFORE the CUDA process starts.
         """
